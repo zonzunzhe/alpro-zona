@@ -51,13 +51,13 @@ int main() {
   char e5 = ((e - 'a' + range) % 26) + 'a';
   std::cout << "Hasil Enkripsi: " << e1 << e2 << e3 << e4 << e5 << std::endl;
   std::cout << "===== REVERSE =====" << std::endl;
+  std::cout << "Masukan Range: ";
+  std::cin >> range;
   char r1 = ((a - 'a' - range + 26) % 26) + 'a';
   char r2 = ((b - 'a' - range + 26) % 26) + 'a';
   char r3 = ((c - 'a' - range + 26) % 26) + 'a';
   char r4 = ((d - 'a' - range + 26) % 26) + 'a';
   char r5 = ((e - 'a' - range + 26) % 26) + 'a';
-  std::cout << "Masukan Range: ";
-  std::cin >> range;
   std::cout << "Hasil Enkripsi: " << r1 << r2 << r3 << r4 << r5 << std::endl;
   return 0;
 }
