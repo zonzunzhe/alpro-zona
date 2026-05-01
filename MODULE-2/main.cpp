@@ -1,30 +1,23 @@
 #include <iostream>
-
 #include "logic.hpp"
 int main() {
-    int umur;
-    int arah;
-    int shield = 3;
-    int waktu_selam = 60;
-    int waktu_sekarang = 0;
-    int langkah_sekarang = 0;
-    int langkah_wajib = 3;
-    int toleransi = 3;
-    int lebar;
-    char pilihan_gerakan;
-    char pilihan_lawan;
+    int umur,arah,lebar;
+    char pilihan_gerakan,pilihan_lawan;
+    int shield = 3,waktu_selam = 60,waktu_sekarang = 10,langkah_sekarang = 0,langkah_wajib = 3,toleransi = 3 ;
     bool cihuy = 1;
     std::cout << "=== GOBLET OF FIRE: TURNAMENT TRIWIZARD ===" << std::endl;
     std::cout << "Masukan umur anda: " << std::endl;
     std::cin >> umur;
+    std::cin.clear(); 
+    std::cin.ignore(1000, '\n');
     if (umur >= 17) {
 	std::cout << "Piala Api Menyala! Anda Terpilih" << std::endl;
 	PAUSE();
 	SAPU_LAYAR();
-	TUGAS1(shield, pilihan_gerakan, tugas, cihuy);
+	TUGAS1(shield, pilihan_gerakan, cihuy);
 	PAUSE();
 	SAPU_LAYAR();
-	TUGAS2(waktu_sekarang, waktu_selam, pilihan_lawan)
+	TUGAS2(waktu_sekarang, waktu_selam, pilihan_lawan);
 	PAUSE();
 	SAPU_LAYAR();
 	TUGAS3(langkah_sekarang, langkah_wajib, toleransi, arah);

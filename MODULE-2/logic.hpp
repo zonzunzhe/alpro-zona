@@ -4,13 +4,11 @@
 #include <iostream>
 #define BELAH_KETUPAT(n)                                           \
     do {                                                           \
-	/* Bagian Atas */                                          \
 	for (int i = 1; i <= (n); i++) {                           \
 	    for (int j = 1; j <= (n) - i; j++) std::cout << " ";   \
 	    for (int k = 1; k <= 2 * i - 1; k++) std::cout << "*"; \
 	    std::cout << std::endl;                                \
 	}                                                          \
-	/* Bagian Bawah */                                         \
 	for (int i = (n) - 1; i >= 1; i--) {                       \
 	    for (int j = 1; j <= (n) - i; j++) std::cout << " ";   \
 	    for (int k = 1; k <= 2 * i - 1; k++) std::cout << "*"; \
@@ -22,11 +20,10 @@
     {                                                      \
 	std::cout << "Press the ENTER key to continue..."; \
 	do {                                               \
-	    std::cin.ignore(10000, '\n');                  \
 	    std::cin.get();                                \
 	} while (0);                                       \
     }
-#define TUGAS1(shield, pilihan_gerakan, tugas, cihuy)                         \
+#define TUGAS1(shield, pilihan_gerakan, cihuy)                         \
     {                                                                         \
 	std::cout << "--- TUGAS 1: NAGA HUNGARIAN HORNTAIL ---" << std::endl; \
 	std::cout << "Nyawa Anda Sisa " << shield << std::endl;               \
