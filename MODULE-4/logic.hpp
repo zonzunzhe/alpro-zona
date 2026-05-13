@@ -72,7 +72,7 @@ void input_barang(char daftar_barang[100][50], int stok_barang[100], int harga_b
 
 void lihat_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int jumlah_sekarang) {
     if (jumlah_sekarang == 0) {
-        cout << "Gudang Kosong." << endl;
+        cout << "Kosong loh yaaa" << endl;
         return;
     }
     for (int i = 0; i < jumlah_sekarang; i++) {
@@ -81,7 +81,7 @@ void lihat_barang(char daftar_barang[100][50], int stok_barang[100], int harga_b
         header2();
         cout <<"Nama Barang\t: "<<daftar_barang[i]<<endl;
         header2();
-        cout <<"Harga\t\t: " << harga_barang[i]<<endl;
+        cout <<"Harga\t\t: Rp." << harga_barang[i]<<endl;
         header2();
         cout <<"Stok\t\t: " << stok_barang[i]<<endl;
         header2();
@@ -100,7 +100,7 @@ void hapus_barang(char daftar_barang[100][50], int stok_barang[100], int harga_b
     
     int indeks;
     while(true){
-        cout << "Pilih nomor barang yang dihapus: ";
+        cout << "Pilih nomor barang yang dihapus"<<"(1-"<<jumlah_sekarang<<"):";
         cin >> indeks;
         if (cin.fail() || harga_barang[jumlah_sekarang] < 0) {
             cout << "[!] Error: Input harus berupa angka positif!" << endl;
@@ -127,8 +127,7 @@ void hapus_barang(char daftar_barang[100][50], int stok_barang[100], int harga_b
         return;
     }
 }
-
-void edit_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int jumlah_sekarang) {
+void edit_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int &jumlah_sekarang) {
     system("cls");
     header();
     cout << "|                    TIVAIZ STORE                       |" << endl;
@@ -136,56 +135,146 @@ void edit_barang(char daftar_barang[100][50], int stok_barang[100], int harga_ba
     header2();
     cout << "                     EDIT BARANG                          " << endl;
     header2();
-    lihat_barang(daftar_barang,stok_barang,harga_barang,jumlah_sekarang);
-    if (jumlah_sekarang == 0) return;
+    lihat_barang(daftar_barang, stok_barang, harga_barang, jumlah_sekarang);
     
-    int indeks;
-    while (true){
-        cout << "Pilih nomor barang yang diedit: ";
+    if (jumlah_sekarang == 0) {
+        return;
+    }
+    
+    int indeks, option;
+    while (true) {
+        cout << "Pilih nomor barang yang diedit"<<"(1-"<<jumlah_sekarang<<"):";
         cin >> indeks;
-        if (cin.fail() || harga_barang[jumlah_sekarang] < 0) {
-            cout << "[!] Error: Input harus berupa angka positif!" << endl;
+        if (cin.fail() || indeks <= 0 || indeks > jumlah_sekarang) {
+            cout << "[!] Error: Nomor tidak valid!" << endl;
             cin.clear();
             while (cin.get() != '\n');
-            } 
+        } 
         else {
             break;
         }
     }
-    indeks--;
+    
+    indeks--; // Penyesuaian ke indeks array
+    int shift; 
+
     if (indeks >= 0 && indeks < jumlah_sekarang) {
-        cout << "Nama Baru: ";
-        cin >> daftar_barang[indeks];
-        cout << "Harga Baru: ";
-        cin >> harga_barang[indeks];
-        cout << "Stok Baru: ";
-        cin >> stok_barang[indeks];
-        cout << "Data berhasil diperbarui!" << endl;
-    } else {
-        cout << "Nomor tidak valid!" << endl;
-        return;
+        while(true) {
+            while(true) {
+                system("pause");
+                system("cls");
+                header();
+                cout << "|                    TIVAIZ STORE                       |" << endl;
+                header();
+                header2();
+                cout << "                     EDIT BARANG                          " << endl;
+                header2();
+                cout << "Barang: " << daftar_barang[indeks] << endl;
+                cout << "Harga Saat Ini: Rp." << harga_barang[indeks] << endl;
+                cout << "Stok Saat Ini : " << stok_barang[indeks] << endl;
+                header2();
+                cout << "1. Edit Harga" << endl;
+                cout << "2. Tambah Stok" << endl;
+                cout << "3. Kurangi Stok" << endl;
+                cout << "0. Kembali" << endl;
+                header2();
+                cout << "Pilih Opsi: ";
+                cin >> option;
+
+                if (cin.fail()) {
+                    cout << "[!] Error: Input harus berupa angka" << endl;
+                    cin.clear();
+                    while (cin.get() != '\n');
+                } else {
+                    break;
+                }
+            }
+
+            if (option == 1) {
+                int harga_lama = harga_barang[indeks];
+                while(true) {
+                    cout << "Harga Baru (Rp.): ";
+                    cin >> harga_barang[indeks];
+                    if (cin.fail() || harga_barang[indeks] < 0) {
+                        cout << "[!] Error: Input harus berupa angka positif" << endl;
+                        cin.clear();
+                        while (cin.get() != '\n');
+                    } else {
+                        break;
+                    }
+                }
+                cout << "Harga " << daftar_barang[indeks] << " : Rp." << harga_lama << " --> Rp." << harga_barang[indeks] << endl;
+            }
+            else if (option == 2) {
+                while(true) {
+                    cout << "Jumlah Tambah: ";
+                    cin >> shift;
+                    if (cin.fail() || shift < 0) {
+                        cout << "[!] Error: Input harus berupa angka positif" << endl;
+                        cin.clear();
+                        while (cin.get() != '\n');
+                    } else {
+                        break;
+                    }
+                }
+                int stok_sebelumnya = stok_barang[indeks];
+                stok_barang[indeks] += shift;
+                cout << "Stok " << daftar_barang[indeks] << " : " << stok_sebelumnya << " --> " << stok_barang[indeks] << endl;
+            }
+            else if (option == 3) {
+                while(true) {
+                    cout << "Jumlah Kurang: ";
+                    cin >> shift;
+                    if (cin.fail() || shift < 0) {
+                        cout << "[!] Error: Input harus berupa angka positif" << endl;
+                        cin.clear();
+                        while (cin.get() != '\n');
+                    } else {
+                        break;
+                    }
+                }
+                if (shift > stok_barang[indeks]) {
+                    cout << "[!] Error: Stok tidak mencukupi! (Stok saat ini: " << stok_barang[indeks] << ")" << endl;
+                } else {
+                    int stok_sebelumnya = stok_barang[indeks];
+                    stok_barang[indeks] -= shift;
+                    cout << "Stok " << daftar_barang[indeks] << " : " << stok_sebelumnya << " --> " << stok_barang[indeks] << endl;
+                }
+            }
+            else if (option == 0) {
+                return;
+            }
+            else {
+                cout << "Input Tidak Valid" << endl;
+            }
+        }
     }
 }
-void store_menu(){
-    char daftar_barang[100][50];
-    int stok_barang[100];
-    int harga_barang[100];
-    int jumlah_sekarang = 0;
-    int menu_pilihan;
-    bool aseli=1;
+void store_menu(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int &jumlah_sekarang,int menu_pilihan,bool aseli){
     do{
-        
-        header();
-        cout << "|                    TIVAIZ STORE                       |" << endl;
-        header();
-        cout <<"1. Input Barang"<<endl;
-        cout <<"2. Hapus Barang"<<endl;
-        cout <<"3. Edit Barang"<<endl;
-        cout <<"4. Lihat Barang"<<endl;
-        cout <<"0. Kembali"<<endl;
-        header();
-        cout <<"Pilih Menu: ";
-        cin >>menu_pilihan;
+        while(true){
+            header();
+            cout << "|                    TIVAIZ STORE                       |" << endl;
+            header();
+            cout <<"1. Input Barang"<<endl;
+            cout <<"2. Hapus Barang"<<endl;
+            cout <<"3. Edit Barang"<<endl;
+            cout <<"4. Lihat Barang"<<endl;
+            cout <<"0. Kembali"<<endl;
+            header();
+            cout <<"Pilih Menu: ";
+            cin >>menu_pilihan;
+            if (cin.fail()) {
+                cout << "[!] Error: Input harus berupa angka" << endl;
+                cin.clear();
+                while (cin.get() != '\n');
+                system("pause");
+                system("cls");
+            }
+            else{
+                break;
+            }
+        }
         switch(menu_pilihan){
             case 1:
                 input_barang(daftar_barang, stok_barang, harga_barang, jumlah_sekarang);
@@ -218,8 +307,11 @@ void store_menu(){
                 system("pause");
                 system("cls");
                 return;
-            default:
-                cout<<"Pilihan Tidak Valid";
+                default:
+                cout<<"Pilihan Tidak Valid"<<endl;
+                system("pause");
+                system("cls");
+
         }
     }while(aseli);
 }
@@ -281,6 +373,8 @@ void kalkulator_dasar(double a,double b,char operasi){
         }
         else {
             cout << "Operasi Tidak Valid" << endl;
+            cin.ignore(1000,'\n');
+            cin.clear();
         }
     }
 }
@@ -307,24 +401,24 @@ void kalkulator_menu(){
         cin >>pilihan_menu;
         switch (pilihan_menu){
             case 1:
-            system("cls");
-            header('+','-');
-            cout << "|                    K4LKUL4T0R                         |" << endl;
-            header('x','/');
-            kalkulator_dasar(angka_pertama,angka_kedua,operasi);
-            system("pause");
-            system("cls");
-            break;
-            case 2:
-            while(true){
                 system("cls");
                 header('+','-');
                 cout << "|                    K4LKUL4T0R                         |" << endl;
                 header('x','/');
-                cout<<"Masukan Angka: ";
-                cin>>angka_faktorial;
-                if (cin.fail()) {
-                    cout << "[!] Error: Input harus berupa angka!" << endl;                            
+                kalkulator_dasar(angka_pertama,angka_kedua,operasi);
+                system("pause");
+                system("cls");
+                break;
+                case 2:
+                while(true){
+                    system("cls");
+                    header('+','-');
+                    cout << "|                    K4LKUL4T0R                         |" << endl;
+                    header('x','/');
+                    cout<<"Masukan Angka: ";
+                    cin>>angka_faktorial;
+                if (cin.fail() || angka_faktorial < 0) {
+                    cout << "[!] Error: Input harus berupa angka positif!" << endl;                            
                     cin.clear();
                     system("pause");
                     while (cin.get() != '\n');
@@ -353,6 +447,12 @@ void kalkulator_menu(){
     }
 void aselole(){
     int menu;
+    char daftar_barang[100][50];
+    int stok_barang[100];
+    int harga_barang[100];
+    int jumlah_sekarang = 0;
+    int menu_pilihan;
+    bool aseli=1;
     while (true){
         while (true){
             banner_awal();
@@ -376,7 +476,7 @@ void aselole(){
         system("cls");
         switch(menu) {
             case 1:
-                store_menu();
+                store_menu(daftar_barang,stok_barang,harga_barang,jumlah_sekarang,menu_pilihan,aseli);
                 break;
             case 2:
                 kalkulator_menu();
@@ -388,6 +488,8 @@ void aselole(){
                 return;
             default:
                 cout<<"Input Yang Benar Tolong"<<endl;
+                system("pause");
+                system("cls");
         }
     }
 }
