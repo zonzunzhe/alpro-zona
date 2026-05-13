@@ -11,17 +11,13 @@ void banner_awal(){
     cout << "|                                                       |" << endl;
     cout << "|=======================================================|" << endl;
 }
-void header(char a='#',char b='#'){
-    cout <<a<<"======================================================="<<b<< endl;
+void header(char chara_a='#',char chara_b='#'){
+    cout <<chara_a<<"======================================================="<<chara_b<< endl;
 }
 void header2(){
     cout <<"---------------------------------------------------------"<< endl;
 }
-char daftar_barang[100][50];
-int stok_barang[100];
-int harga_barang[100];
-int jumlah_sekarang = 0;
-void input_barang() {
+void input_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int &jumlah_sekarang) {
     system("cls");
     header();
     cout << "|                    TIVAIZ STORE                       |" << endl;
@@ -46,7 +42,7 @@ void input_barang() {
         cout << "Harga Barang \t:";
         cin >> harga_barang[jumlah_sekarang];
         header2();
-
+        
         if (cin.fail() || harga_barang[jumlah_sekarang] < 0) {
             cout << "[!] Error: Input harus berupa angka positif!" << endl;
             cin.clear();
@@ -74,7 +70,7 @@ void input_barang() {
     header2();
 }
 
-void lihat_barang() {
+void lihat_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int jumlah_sekarang) {
     if (jumlah_sekarang == 0) {
         cout << "Gudang Kosong." << endl;
         return;
@@ -91,7 +87,7 @@ void lihat_barang() {
         header2();
     }
 }
-void hapus_barang() {
+void hapus_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int &jumlah_sekarang) {
     system("cls");
     header();
     cout << "|                    TIVAIZ STORE                       |" << endl;
@@ -99,7 +95,7 @@ void hapus_barang() {
     header2();
     cout << "                     HAPUS BARANG                          " << endl;
     header2();
-    lihat_barang();
+    lihat_barang(daftar_barang,stok_barang,harga_barang, jumlah_sekarang);
     if (jumlah_sekarang == 0) return;
     
     int indeks;
@@ -132,7 +128,7 @@ void hapus_barang() {
     }
 }
 
-void edit_barang() {
+void edit_barang(char daftar_barang[100][50], int stok_barang[100], int harga_barang[100], int jumlah_sekarang) {
     system("cls");
     header();
     cout << "|                    TIVAIZ STORE                       |" << endl;
@@ -140,7 +136,7 @@ void edit_barang() {
     header2();
     cout << "                     EDIT BARANG                          " << endl;
     header2();
-    lihat_barang();
+    lihat_barang(daftar_barang,stok_barang,harga_barang,jumlah_sekarang);
     if (jumlah_sekarang == 0) return;
     
     int indeks;
@@ -171,10 +167,14 @@ void edit_barang() {
     }
 }
 void store_menu(){
+    char daftar_barang[100][50];
+    int stok_barang[100];
+    int harga_barang[100];
+    int jumlah_sekarang = 0;
     int menu_pilihan;
     bool aseli=1;
     do{
-
+        
         header();
         cout << "|                    TIVAIZ STORE                       |" << endl;
         header();
@@ -188,17 +188,17 @@ void store_menu(){
         cin >>menu_pilihan;
         switch(menu_pilihan){
             case 1:
-                input_barang();
+                input_barang(daftar_barang, stok_barang, harga_barang, jumlah_sekarang);
                 system("pause");
                 system("cls");
                 break;
-            case 2:
-                hapus_barang();
+                case 2:
+                hapus_barang(daftar_barang, stok_barang, harga_barang, jumlah_sekarang);
                 system("pause");
                 system("cls");
                 break;
             case 3:
-                edit_barang();
+                edit_barang(daftar_barang, stok_barang, harga_barang, jumlah_sekarang);
                 system("pause");
                 system("cls");
                 break;
@@ -210,7 +210,7 @@ void store_menu(){
                 header2();
                 cout << "                     LIHAT BARANG                          " << endl;
                 header2();
-                lihat_barang();
+                lihat_barang(daftar_barang, stok_barang, harga_barang, jumlah_sekarang);
                 system("pause");
                 system("cls");
                 break;
@@ -284,11 +284,11 @@ void kalkulator_dasar(double a,double b,char operasi){
         }
     }
 }
-int faktorial(int n){
-    if (n <= 1) {
+long long faktorial(int angka_faktorial){
+    if (angka_faktorial <= 1) {
         return 1;
     }
-    return n * faktorial(n - 1);
+    return angka_faktorial * faktorial(angka_faktorial - 1);
 }
 void kalkulator_menu(){
     int pilihan_menu,angka_faktorial;
@@ -351,7 +351,7 @@ void kalkulator_menu(){
         }
         while(cihuy != 0);
     }
-void menu_awal(){
+void aselole(){
     int menu;
     while (true){
         while (true){
