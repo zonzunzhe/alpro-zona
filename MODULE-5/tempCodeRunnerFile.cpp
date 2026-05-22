@@ -1,3 +1,4 @@
-void mulai_berjualan(Pesanan_Pelanggan.patty_name,Pesanan_Pelanggan.sauce,Pesanan_Pelanggan.topping){
-
-// }
+void restock_bahan(Pesanan_Pelanggan& pesanan){
+    CLS;
+    pesanan.header1();
+}
