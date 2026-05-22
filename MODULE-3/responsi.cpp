@@ -22,7 +22,6 @@ int main() {
             text_enkrip[i] = (text_enkrip[i] - 'A' - shift_key + 26) % 26 + 'A';
         }
     }
-    
     cout << "Decrypt Result: " << text_enkrip << endl << endl;
     char abjad = 'A';
     for (int i = 0; i < 5; i++) {

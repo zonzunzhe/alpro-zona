@@ -3,7 +3,7 @@
 int main() {
     int umur,arah,lebar;
     char pilihan_gerakan,pilihan_lawan;
-    int shield = 3,waktu_selam = 60,waktu_sekarang = 10,langkah_sekarang = 0,langkah_wajib = 3,toleransi = 3 ;
+    int shield = 3,waktu_selam = 60,waktu_sekarang = 10,langkah_sekarang = 0,langkah_wajib = 3,toleransi = 2 ;
     bool cihuy = 1;
     std::cout << "=== GOBLET OF FIRE: TURNAMENT TRIWIZARD ===" << std::endl;
     std::cout << "Masukan umur anda: " << std::endl;

@@ -2,18 +2,19 @@
 #define LOGIC_HPP
 
 #include <iostream>
-#define BELAH_KETUPAT(n){                                           \
-	for (int i = 1; i <= n; i++) {                           \
-	    for (int j = 1; j <= n - i; j++) std::cout << " ";   \
+#define BELAH_KETUPAT(n)                                           \
+    {                                                              \
+	for (int i = 1; i <= n; i++) {                             \
+	    for (int j = 1; j <= n - i; j++) std::cout << " ";     \
 	    for (int k = 1; k <= 2 * i - 1; k++) std::cout << "*"; \
 	    std::cout << std::endl;                                \
 	}                                                          \
-	for (int i = n-1; i >= 1; i--) {                       \
-	    for (int j = 1; j <= n - i; j++) std::cout << " ";   \
+	for (int i = n - 1; i >= 1; i--) {                         \
+	    for (int j = 1; j <= n - i; j++) std::cout << " ";     \
 	    for (int k = 1; k <= 2 * i - 1; k++) std::cout << "*"; \
 	    std::cout << std::endl;                                \
-	} \
-}
+	}                                                          \
+    }
 #define SAPU_LAYAR() std::cout << "\033[2J\33[1;1H";
 #define PAUSE()                                            \
     {                                                      \
@@ -77,10 +78,11 @@
 	    }                                                                  \
 	    if (pilihan_lawan == 'l' || pilihan_lawan == 'L') {                \
 		std::cout << "Kamu sangat gegabah dan hampir "                 \
-			     "meninggal,untungnya ada putri duyung baik yang " \
+			     "meninggal tenggelam,\nuntungnya ada putri duyung baik yang " \
 			     "mambantumu naik ke permukaan "                   \
 			  << std::endl;                                        \
 		waktu_sekarang = 0;                                            \
+		PAUSE();                                                 \
 		SAPU_LAYAR();                                                  \
 	    } else if (pilihan_lawan == 'h' || pilihan_lawan == 'H') {         \
 		waktu_sekarang += 10;                                          \
@@ -105,54 +107,54 @@
 		std::cin.ignore(1000, '\n');                                 \
 		std::cout << "Input harus angka! Coba lagi.\n" << std::endl; \
 		continue;                                                    \
-	}                                                                \
-	\
+	    }                                                                \
+                                                                             \
 	    std::cin.ignore(1000, '\n');                                     \
 	    if (arah == 1) {                                                 \
-			std::cout                                                    \
+		std::cout                                                    \
 		    << "Awww Kaki Saya Sakit (Kamu terkena akar berbisa)"    \
 		    << std::endl;                                            \
-			langkah_sekarang = 0;                                        \
-			toleransi--;                                                 \
-			if (toleransi <= 0) {                                        \
-				std::cout << ">>KESEMPATAN HABIS KAMU DITENDANG KELUAR " \
-				"DARI LABIRIN"                              \
-				<< std::endl;                                  \
-				std::cout << ">>Mengulang Dari Awal" << std::endl;       \
-				langkah_sekarang = 0;                                    \
-				toleransi = 3;                                           \
-				PAUSE();                                                 \
-				SAPU_LAYAR();                                            \
-			}                                                            \
-	    } else if (arah == 2) {                                          \
-			langkah_sekarang++;                                          \
+		langkah_sekarang = 0;                                        \
+		toleransi--;                                                 \
+		if (toleransi <= 0) {                                        \
+		    std::cout << ">>KESEMPATAN HABIS KAMU DITENDANG KELUAR " \
+				 "DARI LABIRIN"                              \
+			      << std::endl;                                  \
+		    std::cout << ">>Mengulang Dari Awal" << std::endl;       \
+		    langkah_sekarang = 0;                                    \
+		    toleransi = 3;                                           \
+		    PAUSE();                                                 \
+		    SAPU_LAYAR();                                            \
+		}                                                            \
+	} else if (arah == 2) {                                          \
+		langkah_sekarang++;                                          \
 	    } else if (arah == 3) {                                          \
-			langkah_sekarang = 3;                                        \
+		langkah_sekarang = 3;                                        \
 	    } else {                                                         \
-			std::cout << "pilihan tidak valid,pilih lagi: ";             \
+		std::cout << "pilihan tidak valid,pilih lagi: ";             \
 	    }                                                                \
 	}                                                                    \
 	std::cout << "Aku melihat cahaya... ohh .. apatu woi" << std::endl;  \
-}
-#define TUGAS4(lebar)                                                    \
-{                                                                    \
-	std::cout << "--- JALAN KELUAR ---" << std::endl;                \
-	std::cout << "Kamu melihat sesuatu yang bersinar ditengah arena" \
-	<< std::endl;                                          \
-	std::cout << "Terdapat sesuatu yang terkurung di dalam sebuah "  \
-	"mesin,coba masukan angka ke mesin itu"             \
-	<< std::endl;                                          \
-	do { \
-		std::cout << "Masukan Angka (Minimal 5): ";\
-		std::cin >> lebar;                                            \
-		if (std::cin.fail()) {                                           \
+    }
+#define TUGAS4(lebar)                                                        \
+    {                                                                        \
+	std::cout << "--- JALAN KELUAR ---" << std::endl;                    \
+	std::cout << "Kamu melihat sesuatu yang bersinar ditengah arena"     \
+	<< std::endl;                                              \
+	std::cout << "Terdapat sesuatu yang terkurung di dalam sebuah "      \
+		     "mesin,coba masukan angka ke mesin itu"                 \
+		  << std::endl;                                              \
+		  do {                                                                 \
+			std::cout << "Masukan Angka (Minimal 5): ";                      \
+			std::cin >> lebar;                                               \
+	    if (std::cin.fail()) {                                           \
 		std::cin.clear();                                            \
 		std::cin.ignore(1000, '\n');                                 \
 		std::cout << "Input harus angka! Coba lagi.\n" << std::endl; \
-	}                      \
-}\
-	while (lebar < 5); \
-	BELAH_KETUPAT(lebar);                                            \
-	std::cout << "HOREEEEE KAMU JUARAAAAA BANGGA GWH";               \
-}
+		lebar = 0;                                                   \
+	    }                                                                \
+	} while (lebar < 5);                                                 \
+	BELAH_KETUPAT(lebar);                                                \
+	std::cout << "HOREEEEE KAMU JUARAAAAA BANGGA GWH";                   \
+    }
 #endif
