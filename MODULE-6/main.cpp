@@ -441,6 +441,53 @@ int startup_menu() {
     }
     return pilihan;
 }
+void suntik_string_otomatis(sister_core& sister, const char* teks) {
+    size_t ukuran = strlen(teks) + 1;
+    size_t current_offset = sister.bump_pointer;
+    size_t aligned_offset = (current_offset + (sister.alignment - 1)) & ~(sister.alignment - 1);
+    size_t final_offset = aligned_offset + sister.special_gap;
+    
+    unsigned char* alamat_tujuan = sister.pool_start + final_offset;
+    for (size_t i = 0; i < ukuran; ++i) {
+        alamat_tujuan[i] = (unsigned char)teks[i];
+    }
+    
+    size_t idx = sister.used_slots;
+    sister.slots[idx].tipe = TIPE_CHAR_PTR;
+    sister.slots[idx].ukuran = ukuran;
+    sister.slots[idx].offset = final_offset;
+    sister.slots[idx].alamat_memori = (void*)alamat_tujuan;
+    sister.slots[idx].is_deleted = false;
+    manual_strcpy(sister.slots[idx].nilai_str, teks);
+    
+    sister.bump_pointer = final_offset + ukuran;
+    sister.used_bytes += ukuran;
+    sister.used_slots++;
+}
+void suntik_uint_otomatis(sister_core& sister, unsigned int nilai) {
+    size_t ukuran = sizeof(unsigned int);
+    size_t current_offset = sister.bump_pointer;
+    size_t aligned_offset = (current_offset + (sister.alignment - 1)) & ~(sister.alignment - 1);
+    size_t final_offset = aligned_offset;
+    
+    unsigned char* alamat_tujuan = sister.pool_start + final_offset;
+    unsigned char* src = (unsigned char*)&nilai;
+    for (size_t i = 0; i < ukuran; ++i) {
+        alamat_tujuan[i] = src[i];
+    }
+    
+    size_t idx = sister.used_slots;
+    sister.slots[idx].tipe = TIPE_UINT;
+    sister.slots[idx].ukuran = ukuran;
+    sister.slots[idx].offset = final_offset;
+    sister.slots[idx].alamat_memori = (void*)alamat_tujuan;
+    sister.slots[idx].is_deleted = false;
+    sister.slots[idx].nilai_uint = nilai;
+    
+    sister.bump_pointer = final_offset + ukuran;
+    sister.used_bytes += ukuran;
+    sister.used_slots++;
+}
 int main(int argc, char* argv[]) {
     const char* nim_gwh = "F1D02510070";
     if (argc < 2) {
@@ -527,6 +574,10 @@ int main(int argc, char* argv[]) {
         if (victoria.pool_start) free(victoria.pool_start);
         return 1;
     }
+    suntik_string_otomatis(historia, "Historia: Schryza will be free.");
+    suntik_string_otomatis(mira, "Mira: The winds are changing.");
+    suntik_uint_otomatis(mira, 101);
+    suntik_string_otomatis(victoria, "Victoria: Fragment of the First Light.");
     startup_menu();
     int pilihan = -1;
     while (pilihan != 0) {
