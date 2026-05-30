@@ -72,7 +72,7 @@ string get_current_time() {
 void menu_commit(Repo* repo, string author) {
 	CLS;
 	Branch& branch_aktif = repo->branches[repo->active_branch_idx];
-	
+    Commit* commit_baru = new Commit;
 	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
 	cout << "git commit [" << COLOR_GREEN << branch_aktif.name << COLOR_RESET << "]" << endl;
 	garis();
@@ -85,26 +85,26 @@ void menu_commit(Repo* repo, string author) {
 	char konfirmasi;
 	cout << "Push commit? (y/n): ";
 	cin >> konfirmasi;
-	
 	if (konfirmasi == 'y' || konfirmasi == 'Y') {
-		Commit* commit_baru = new Commit;
 		commit_baru->hash = generate_short_hash(pesan);
 		commit_baru->message = pesan;
 		commit_baru->author = author;
 		commit_baru->date = get_current_time();
-
 		commit_baru->next = branch_aktif.head_commit;
 		branch_aktif.head_commit = commit_baru;
 		branch_aktif.commit_count++;
-		
-		cout << "\n[" << COLOR_GREEN << branch_aktif.name << " " << commit_baru->hash << COLOR_RESET << "] " << pesan << endl;
-		cout << "$ git push origin " << branch_aktif.name << " (Berhasil menghijaukan GitHub!)" << endl;
+        cout << "\n[" << COLOR_GREEN << branch_aktif.name << " " << commit_baru->hash << COLOR_RESET << "] " << pesan << endl;
+        garis();
+        cout << branch_aktif.name <<" -> origin/"<<branch_aktif.name<< endl;
+        cout << "$ git push origin " << branch_aktif.name<< endl;
+        garis();
+        cout << "\nTekan Enter untuk kembali...";
+        cin.ignore(1000,'\n');
+        cin.get();
 	} else {
-		cout << "\nCommit dibatalkan." << endl;
+        cout << "\nCommit dibatalkan." << endl;
+        return;
 	}
-	
-	cout << "\nTekan Enter untuk kembali...";
-	cin.get();
 }
 
 int main(int argc, char* argv[]) {
@@ -205,7 +205,7 @@ int main(int argc, char* argv[]) {
                 cout<<"cihuy";
                 break;
                         
-            case 0:
+            case 7:
                 CLS;
                 cout << "Keluar dari program. Pembersihan memori selesai. Sampai jumpa!" << endl;
                         
@@ -215,7 +215,9 @@ int main(int argc, char* argv[]) {
                     current = current->next;
                     delete temp;
             }
+            break;
         }
+        break;
     }
     delete[] repo_aktif->branches;
 	delete repo_aktif;
