@@ -101,12 +101,40 @@ void menu_commit(Repo* repo, string author) {
         cout << "\nTekan Enter untuk kembali...";
         cin.ignore(1000,'\n');
         cin.get();
+		return;
 	} else {
         cout << "\nCommit dibatalkan." << endl;
         return;
 	}
 }
 
+void menu_log(Repo* repo) {
+	CLS;
+	Branch& branch_aktif = repo->branches[repo->active_branch_idx];
+	
+	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
+	cout << "git log [" << COLOR_GREEN << branch_aktif.name << COLOR_RESET << "]" << endl;
+	garis();
+	
+	if (branch_aktif.head_commit == nullptr) {
+		cout << COLOR_YELLOW << "(No commits on this branch)" << COLOR_RESET << endl;
+	} 
+	else {
+		Commit* current = branch_aktif.head_commit;
+
+		while (current != nullptr) {
+			cout << COLOR_YELLOW << "commit " << current->hash << COLOR_RESET << endl;
+			cout << "Author:\t" << current->author << endl;
+			cout << "Date  :\t" << current->date << endl;
+			cout << "\t" << current->message << "\n" << endl;
+			current = current->next;
+		}
+	}
+	
+	cout << "Tekan Enter untuk kembali...";
+	cin.ignore(1000, '\n');
+	cin.get();
+}
 int main(int argc, char* argv[]) {
 	if (argc < 2) {
 		CLS;
@@ -184,9 +212,8 @@ int main(int argc, char* argv[]) {
             case 1:
                 menu_commit(repo_aktif, author_name);
                 break;
-                        
             case 2:
-                cout<<"cihuy";
+				menu_log(repo_aktif);
                 break;
                         
             case 3:
@@ -206,20 +233,16 @@ int main(int argc, char* argv[]) {
                 break;
                         
             case 7:
-                CLS;
                 cout << "Keluar dari program. Pembersihan memori selesai. Sampai jumpa!" << endl;
-                        
                 Commit* current = repo_aktif->branches[0].head_commit;
                 while (current != nullptr) {
                     Commit* temp = current;
                     current = current->next;
                     delete temp;
             }
-            break;
+			delete[] repo_aktif->branches;
+			delete repo_aktif;
+			return 0;
         }
-        break;
     }
-    delete[] repo_aktif->branches;
-	delete repo_aktif;
-	return 0;
 }
