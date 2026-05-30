@@ -314,6 +314,60 @@ void menu_new_repository(Repo*& daftar_repo, int& total_repo, int& indeks_repo_a
 	cout << "\nTekan Enter untuk kembali...";
 	cin.get();
 }
+
+void menu_switch_repository(Repo* daftar_repo, int total_repo, int& indeks_repo_aktif) {
+	CLS;
+	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
+	cout << "switch repository" << endl;
+	garis();
+	
+	cout << "Daftar repository yang tersedia:\n";
+	for (int i = 0; i < total_repo; i++) {
+		int idx_b_aktif = daftar_repo[i].active_branch_idx;
+		string nama_b_aktif = daftar_repo[i].branches[idx_b_aktif].name;
+		int jml_commit = daftar_repo[i].branches[idx_b_aktif].commit_count;
+
+		cout << "[" << i + 1 << "] " << daftar_repo[i].name 
+			 << " (" << daftar_repo[i].branch_count << " branch, " 
+			 << jml_commit << " commits at HEAD: " << nama_b_aktif << ")";
+			 
+		if (i == indeks_repo_aktif) {
+			cout << COLOR_GREEN << " [ACTIVE]" << COLOR_RESET;
+		}
+		cout << endl;
+	}
+	garis();
+
+	int pilihan_nomor;
+	cout << "Select repository number: ";
+	cin >> pilihan_nomor;
+	if (cin.fail()){
+		cout<<"[ERROR] Masukan Angka Positif 1-"<<total_repo<<endl;
+		cin.clear();
+		cin.ignore(1000, '\n');
+		
+		cout << "\nTekan Enter untuk kembali...";
+		cin.get();
+		return;
+	}
+	int indeks_tujuan = pilihan_nomor - 1;
+	
+	if (indeks_tujuan < 0 || indeks_tujuan >= total_repo) {
+		cout << COLOR_RED << "[ERROR] Nomor repository tidak valid atau tidak ditemukan!" << COLOR_RESET << endl;
+		return;
+	} 
+	else {
+		indeks_repo_aktif = indeks_tujuan;
+		string branch_baru = daftar_repo[indeks_repo_aktif].branches[daftar_repo[indeks_repo_aktif].active_branch_idx].name;
+		
+		cout << "\n[" << COLOR_GREEN << "OK" << COLOR_RESET << "] Berhasil beralih ke repository '" << daftar_repo[indeks_repo_aktif].name << "'\n";
+		cout << "HEAD otomatis mengikuti branch aktif terakhir: " << COLOR_GREEN << branch_baru << COLOR_RESET << endl;
+	}
+	
+	cout << "\nTekan Enter untuk kembali...";
+	cin.ignore(1000, '\n');
+	cin.get();
+}
 int main(int argc, char* argv[]) {
 	if (argc < 2) {
 		CLS;
@@ -371,6 +425,7 @@ int main(int argc, char* argv[]) {
     cin.ignore(1000,'\n');
     cin.get();
 	while (true) {
+		CLS;
 		Repo& repo_sekarang = daftar_repo[indeks_repo_aktif];
 		
 		cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
@@ -409,7 +464,7 @@ int main(int argc, char* argv[]) {
 				menu_new_repository(daftar_repo, total_repo, indeks_repo_aktif);
 				break;
             case 6:
-                cout<<"cihuy";
+                menu_switch_repository(daftar_repo, total_repo, indeks_repo_aktif);
                 break;    
 			case 7:
 				CLS;
