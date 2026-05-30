@@ -33,8 +33,9 @@ struct Repo {
 };
 
 void garis(){
-    cout << "-------------------------------------------\n";
+	cout << "-------------------------------------------\n";
 }
+
 string to_lower_case(string str) {
 	string result = "";
 	for (int i = 0; i < str.length(); i++) {
@@ -46,12 +47,12 @@ string to_lower_case(string str) {
 	}
 	return result;
 }
+
 string generate_short_hash(string msg) {
 	const char hex_chars[] = "0123456789abcdef";
 	string hash = "";
 	int val = 0;
 	
-	// Loop manual untuk menghitung nilai karakter
 	for (int i = 0; i < msg.length(); i++) {
 		val += (int)msg[i];
 	}
@@ -62,6 +63,7 @@ string generate_short_hash(string msg) {
 	}
 	return hash;
 }
+
 string get_current_time() {
 	time_t now = time(nullptr);
 	tm* ltm = localtime(&now);
@@ -69,10 +71,11 @@ string get_current_time() {
 	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M", ltm);
 	return string(buffer);
 }
+
 void menu_commit(Repo* repo, string author) {
 	CLS;
 	Branch& branch_aktif = repo->branches[repo->active_branch_idx];
-    Commit* commit_baru = new Commit;
+	
 	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
 	cout << "git commit [" << COLOR_GREEN << branch_aktif.name << COLOR_RESET << "]" << endl;
 	garis();
@@ -85,7 +88,10 @@ void menu_commit(Repo* repo, string author) {
 	char konfirmasi;
 	cout << "Push commit? (y/n): ";
 	cin >> konfirmasi;
+	
 	if (konfirmasi == 'y' || konfirmasi == 'Y') {
+		Commit* commit_baru = new Commit;
+		
 		commit_baru->hash = generate_short_hash(pesan);
 		commit_baru->message = pesan;
 		commit_baru->author = author;
@@ -93,18 +99,22 @@ void menu_commit(Repo* repo, string author) {
 		commit_baru->next = branch_aktif.head_commit;
 		branch_aktif.head_commit = commit_baru;
 		branch_aktif.commit_count++;
-        cout << "\n[" << COLOR_GREEN << branch_aktif.name << " " << commit_baru->hash << COLOR_RESET << "] " << pesan << endl;
-        garis();
-        cout << branch_aktif.name <<" -> origin/"<<branch_aktif.name<< endl;
-        cout << "$ git push origin " << branch_aktif.name<< endl;
-        garis();
-        cout << "\nTekan Enter untuk kembali...";
-        cin.ignore(1000,'\n');
-        cin.get();
+		
+		cout << "\n[" << COLOR_GREEN << branch_aktif.name << " " << commit_baru->hash << COLOR_RESET << "] " << pesan << endl;
+		garis();
+		cout << branch_aktif.name <<" -> origin/"<<branch_aktif.name<< endl;
+		cout << "$ git push origin " << branch_aktif.name<< endl;
+		garis();
+		cout << "\nTekan Enter untuk kembali...";
+		cin.ignore(1000,'\n');
+		cin.get();
 		return;
 	} else {
-        cout << "\nCommit dibatalkan." << endl;
-        return;
+		cout << "\nCommit dibatalkan." << endl;
+		cout << "\nTekan Enter untuk kembali...";
+		cin.ignore(1000, '\n');
+		cin.get();
+		return;
 	}
 }
 
@@ -121,7 +131,6 @@ void menu_log(Repo* repo) {
 	} 
 	else {
 		Commit* current = branch_aktif.head_commit;
-
 		while (current != nullptr) {
 			cout << COLOR_YELLOW << "commit " << current->hash << COLOR_RESET << endl;
 			cout << "Author:\t" << current->author << endl;
@@ -163,6 +172,7 @@ Commit* clone_commits(Commit* source_head) {
 	
 	return new_head;
 }
+
 void menu_branch(Repo* repo) {
 	CLS;
 	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
@@ -201,7 +211,6 @@ void menu_branch(Repo* repo) {
 			int ukuran_baru = repo->branch_count + 1;
 			Branch* array_baru = new Branch[ukuran_baru];
 			
-			// Salin isi data branch lama ke array yang baru
 			for (int i = 0; i < repo->branch_count; i++) {
 				array_baru[i] = repo->branches[i];
 			}
@@ -221,6 +230,7 @@ void menu_branch(Repo* repo) {
 	cout << "\nTekan Enter untuk kembali...";
 	cin.get();
 }
+
 void menu_checkout(Repo* repo) {
 	CLS;
 	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
@@ -258,7 +268,7 @@ void menu_checkout(Repo* repo) {
 	cout << "\nTekan Enter untuk kembali...";
 	cin.get();
 }
-// Fungsi khusus untuk menangani pilihan [5] new repository
+
 void menu_new_repository(Repo*& daftar_repo, int& total_repo, int& indeks_repo_aktif) {
 	CLS;
 	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
@@ -354,6 +364,9 @@ void menu_switch_repository(Repo* daftar_repo, int total_repo, int& indeks_repo_
 	
 	if (indeks_tujuan < 0 || indeks_tujuan >= total_repo) {
 		cout << COLOR_RED << "[ERROR] Nomor repository tidak valid atau tidak ditemukan!" << COLOR_RESET << endl;
+		cout << "\nTekan Enter untuk kembali...";
+		cin.ignore(1000, '\n');
+		cin.get();
 		return;
 	} 
 	else {
@@ -361,13 +374,13 @@ void menu_switch_repository(Repo* daftar_repo, int total_repo, int& indeks_repo_
 		string branch_baru = daftar_repo[indeks_repo_aktif].branches[daftar_repo[indeks_repo_aktif].active_branch_idx].name;
 		
 		cout << "\n[" << COLOR_GREEN << "OK" << COLOR_RESET << "] Berhasil beralih ke repository '" << daftar_repo[indeks_repo_aktif].name << "'\n";
-		cout << "HEAD otomatis mengikuti branch aktif terakhir: " << COLOR_GREEN << branch_baru << COLOR_RESET << endl;
 	}
 	
 	cout << "\nTekan Enter untuk kembali...";
 	cin.ignore(1000, '\n');
 	cin.get();
 }
+
 int main(int argc, char* argv[]) {
 	if (argc < 2) {
 		CLS;
@@ -396,6 +409,7 @@ int main(int argc, char* argv[]) {
 		CLS;
 		cout << COLOR_GREEN << "Halo Pria Sigma (Siapa Lagi Klo Bukan Gwh), Apakah Anda Siap Menghijaukan Github" << COLOR_RESET << endl;
 	}
+	
 	int total_repo = 1;
 	int indeks_repo_aktif = 0;
 	Repo* daftar_repo = new Repo[total_repo];
@@ -405,25 +419,28 @@ int main(int argc, char* argv[]) {
 	daftar_repo[0].branches[0].name = "main";
 	daftar_repo[0].branches[0].head_commit = nullptr;
 	daftar_repo[0].branches[0].commit_count = 0;
-    string input_nama;
-    cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
-    cout << "Author: " << author_name << endl;
-    garis();
-    cout <<"git init"<< endl;
-    garis();
-    cout << COLOR_CYAN << "Repository name: " << COLOR_RESET;
-    std::getline(std::cin, input_nama);
-    if(input_nama.empty()){
-        daftar_repo[0].name="My Repo";
-    }
-    else{
-        daftar_repo[0].name=input_nama;
-    }
-    cout << COLOR_GREEN << "[OK]" << COLOR_RESET <<"Iniatialized empty repository: "<<daftar_repo[0].name<< endl;
-    cout << "On branch: " << COLOR_GREEN <<daftar_repo[0].branches->name<< endl;
-    cout << "\nTekan Enter untuk masuk ke Menu Utama...";
-    cin.ignore(1000,'\n');
-    cin.get();
+	
+	string input_nama;
+	cout << COLOR_CYAN << "GITSIM - Git Simulator" << COLOR_RESET << endl;
+	cout << "Author: " << author_name << endl;
+	garis();
+	cout <<"git init"<< endl;
+	garis();
+	cout << COLOR_CYAN << "Repository name: " << COLOR_RESET;
+	std::getline(std::cin, input_nama);
+	
+	if(input_nama.empty()){
+		daftar_repo[0].name="My Repo";
+	}
+	else{
+		daftar_repo[0].name=input_nama;
+	}
+	cout << COLOR_GREEN << "[OK]" << COLOR_RESET <<"Iniatialized empty repository: "<<daftar_repo[0].name<< endl;
+	cout << "On branch: " << COLOR_GREEN <<daftar_repo[0].branches->name<< endl;
+	
+	cout << "\nTekan Enter untuk masuk ke Menu Utama...";
+	cin.get();
+	
 	while (true) {
 		CLS;
 		Repo& repo_sekarang = daftar_repo[indeks_repo_aktif];
@@ -442,44 +459,47 @@ int main(int argc, char* argv[]) {
 		cout << "[6] switch repository\n";
 		cout << "[7] exit\n";
 		garis();
-        int pilihan;
+		
+		int pilihan;
 		cout << "> ";
-        cin>>pilihan;
-        switch (pilihan) {
-            case 1:
-                menu_commit(&daftar_repo[indeks_repo_aktif], author_name);
-                break;
-            case 2:
+		cin >> pilihan;
+		
+		switch (pilihan) {
+			case 1:
+				menu_commit(&daftar_repo[indeks_repo_aktif], author_name);
+				break;
+			case 2:
 				menu_log(&daftar_repo[indeks_repo_aktif]);
-                break;
-				
+				break;
 			case 3:
 				menu_branch(&daftar_repo[indeks_repo_aktif]);
-                break;
-                        
-            case 4:
-                menu_checkout(&daftar_repo[indeks_repo_aktif]);
-                break;  
-            case 5:
+				break;
+			case 4:
+				menu_checkout(&daftar_repo[indeks_repo_aktif]);
+				break;  
+			case 5:
 				menu_new_repository(daftar_repo, total_repo, indeks_repo_aktif);
 				break;
-            case 6:
-                menu_switch_repository(daftar_repo, total_repo, indeks_repo_aktif);
-                break;    
+			case 6:
+				menu_switch_repository(daftar_repo, total_repo, indeks_repo_aktif);
+				break;    
 			case 7:
 				CLS;
 				cout << "Keluar dari program. Pembersihan memori selesai. Sampai jumpa!" << endl;
-				for (int i = 0; i < daftar_repo[indeks_repo_aktif].branch_count; i++) {
-					Commit* current = daftar_repo[indeks_repo_aktif].branches[i].head_commit;
-					while (current != nullptr) {
-						Commit* temp = current;
-						current = current->next;
-						delete temp;
+
+				for (int r = 0; r < total_repo; r++) {
+					for (int b = 0; b < daftar_repo[r].branch_count; b++) {
+						Commit* current = daftar_repo[r].branches[b].head_commit;
+						while (current != nullptr) {
+							Commit* temp = current;
+							current = current->next;
+							delete temp;
+						}
 					}
+					delete[] daftar_repo[r].branches;
 				}
-				delete[] daftar_repo->branches;
-				delete daftar_repo;
+				delete[] daftar_repo;
 				return 0;
-        }
-    }
+		}
+	}
 }
